@@ -46,5 +46,5 @@ void* mem_sbrk(int increment) {
     return nullptr;
   }
   heap_brk += increment;
-  return reinterpret_cast<void*>(heap_brk);
+  return reinterpret_cast<void*>(old_brk);
 }
