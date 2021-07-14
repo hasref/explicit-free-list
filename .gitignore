@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# lsp
+compile_commands.json
+
+# builds
+build/
