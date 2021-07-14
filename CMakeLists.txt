@@ -8,7 +8,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(alloc src/main.cpp)
 target_include_directories(alloc PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include)
-target_compile_options(alloc PRIVATE -Wall -Werror -Wpedantic -fsanitize=address -fsanitize=undefined -std=c++20)
+target_compile_options(alloc PRIVATE -Wall -Werror -Wpedantic -fsanitize=address -fsanitize=undefined)
+target_compile_features(alloc PRIVATE cxx_std_20)
 target_link_options(alloc PRIVATE -fsanitize=address -fsanitize=undefined)
 target_link_libraries(alloc PRIVATE CONAN_PKG::fmt)
 
