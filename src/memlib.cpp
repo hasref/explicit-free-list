@@ -37,7 +37,15 @@ void mem_init() {
   heap_max_addr = static_cast<std::byte*>(heap_start + MAX_HEAP_SIZE);
 }
 
-std::byte* mem_sbrk(int increment) {
+/*
+ * Increase the size of the heap and returns a pointer to the old head of the
+ * heap.
+ *
+ * @param increment Make the heap bigger by increment bytes.
+ * @return Old heap of the heap (the new heap of the heap is at old_head +
+ * increment).
+ */
+std::byte* mem_sbrk(std::size_t increment) {
   std::byte* old_brk = heap_brk;
 
   if (increment < 0 || (heap_brk + increment) > heap_max_addr) {
