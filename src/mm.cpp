@@ -139,7 +139,7 @@ inline std::byte* get_footer_ptr(std::byte* block_ptr) {
  *
  */
 inline std::byte* get_nextblk_ptr(std::byte* block_ptr) {
-  return block_ptr + (get_blksize(block_ptr) - WORD_SIZE);
+  return block_ptr + (get_blksize(block_ptr - WORD_SIZE));
 }
 
 /*
@@ -165,6 +165,7 @@ static void checkblock(std::byte* bp);
  * Initilialize the allocator.
  */
 int mm_init() {
+  mem_init();
   if ((heap_listp = mem_sbrk(4 * WORD_SIZE)) == nullptr) {
     return -1;
   }

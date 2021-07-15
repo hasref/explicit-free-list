@@ -1,3 +1,5 @@
+#include "memlib.h"
+
 #include <fmt/core.h>
 
 #include <cerrno>

@@ -16,6 +16,6 @@ void mem_init();
  * @return pointer to block of memory at least 'increment'
  * bytes. On out of memory, the allocator returns a nullptr.
  */
-std::byte* mem_sbrk(int increment);
+std::byte* mem_sbrk(std::size_t increment);
 
 #endif
