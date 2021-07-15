@@ -37,7 +37,7 @@ void mem_init() {
   heap_max_addr = static_cast<std::byte*>(heap_start + MAX_HEAP_SIZE);
 }
 
-void* mem_sbrk(int increment) {
+std::byte* mem_sbrk(int increment) {
   std::byte* old_brk = heap_brk;
 
   if (increment < 0 || (heap_brk + increment) > heap_max_addr) {
@@ -46,5 +46,5 @@ void* mem_sbrk(int increment) {
     return nullptr;
   }
   heap_brk += increment;
-  return reinterpret_cast<void*>(old_brk);
+  return old_brk;
 }

@@ -5,6 +5,10 @@
 #include <cstdint>
 #include <cstdlib>
 
+#include "memlib.h"
+
+// TODO: Look into using -fvisibility here: https://gcc.gnu.org/wiki/Visibility
+
 /*
  * Terminology:
  * Block Size is always a multiple of DOUBLE_SIZE.
@@ -21,13 +25,33 @@
 constexpr int WORD_SIZE = 4;
 constexpr int DOUBLE_SIZE = 8; /* double word size*/
 constexpr int CHUNKSIZE = (1 << 12);
+static std::byte* heap_listp = nullptr; /* pointer to first block */
 
 template <typename T>
 bool max(T x, T y) {
   return x > y ? x : y;
 }
 
-inline int pack(int size, int alloc) { return (size | alloc); }
+/*
+ * pack size and alloc into a single value using bitwise 'or' so as to create a
+ * block header.
+ *
+ * @param size size of the header. This must be a multiple of 8.
+ * @param alloc is either 0 (false) or 1(true) indicating whether the block is
+ * allocated.
+ */
+inline uint32_t pack(uint32_t size, uint32_t alloc) { return (size | alloc); }
+
+/*
+ * pack size and alloc into a single value using bitwise 'or' so as to create a
+ * block header.
+ *
+ * @param size size of the header. This must be a multiple of 8.
+ * @param alloc indicates whether the block is allocated.
+ */
+inline uint32_t pack(uint32_t size, bool alloc) {
+  return (size | static_cast<uint32_t>(alloc));
+}
 
 /*
  * Read 32 bits at pointer and return as uint32_t.
@@ -124,6 +148,23 @@ inline std::byte* get_nextblk_ptr(std::byte* block_ptr) {
 inline std::byte* get_prevblk_ptr(std::byte* block_ptr) {
   // block_ptr - DOUBLE_SIZE is previous block's footer
   return block_ptr - get_blksize(block_ptr - DOUBLE_SIZE);
+}
+
+/*
+ * Initilialize the allocator.
+ */
+int mm_init() {
+  if ((heap_listp = mem_sbrk(4 * WORD_SIZE)) == nullptr) {
+    return -1;
+  }
+  /* alignment padding */
+  put_uvalue_at(heap_listp, 0);
+  // create special first header block (prologue)
+  put_uvalue_at(heap_listp + WORD_SIZE, pack(DOUBLE_SIZE, true));
+  put_uvalue_at(heap_listp + 2 * WORD_SIZE, pack(DOUBLE_SIZE, true));
+  // create special last header (epilogue)
+  put_uvalue_at(heap_listp + 3 * WORD_SIZE, pack(0, true));
+  heap_listp += 2 * WORD_SIZE;
 }
 
 #endif
