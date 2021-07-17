@@ -55,4 +55,10 @@ extern std::byte* mm_realloc(std::byte* ptr, std::size_t size);
  */
 extern void mm_checkheap(int verbose);
 
+/*
+ * Free memory allocated by the allocator. This invalidates
+ * all pointers handed out by the allcoator.
+ */
+extern void mm_teardown();
+
 #endif

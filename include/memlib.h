@@ -18,4 +18,8 @@ void mem_init();
  */
 std::byte* mem_sbrk(std::size_t increment);
 
+/*
+ * Free allocated heap.
+ */
+void mem_teardown();
 #endif

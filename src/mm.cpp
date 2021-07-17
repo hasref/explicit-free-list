@@ -517,3 +517,5 @@ void checkheap(int verbose) {
     fmt::print("Bad epilogue header\n");
   }
 }
+
+void mm_teardown() { mem_teardown(); }

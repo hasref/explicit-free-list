@@ -58,3 +58,5 @@ std::byte* mem_sbrk(std::size_t increment) {
   heap_brk += increment;
   return old_brk;
 }
+
+void mem_teardown() { std::free(heap_start); }
