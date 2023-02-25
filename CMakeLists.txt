@@ -19,7 +19,7 @@ target_include_directories(tests PRIVATE ${CMAKE_CURRENT_LIST_DIR}/include)
 target_compile_options(tests PRIVATE -Wall -Werror -Wpedantic -fsanitize=address)
 target_compile_features(tests PRIVATE cxx_std_20)
 target_link_options(tests PRIVATE -fsanitize=address)
-target_link_libraries(tests PRIVATE Catch2::Catch2 alloc)
+target_link_libraries(tests PRIVATE fmt::fmt Catch2::Catch2 alloc)
 
 # lsp
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
